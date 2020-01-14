@@ -16,11 +16,13 @@ $(function() {
   $('.js-toggle-sp-menu').on('click', function() {
     $(this).toggleClass('active');
     $('.js-toggle-sp-menu-target').toggleClass('active');
+    $('html').toggleClass('menu');
   });
 
   // ハンバーガーメニュー内のリンクをクリックするとメニューが閉じる処理
   $('.js-toggle-sp-menu-target a').on('click', function() {
     $('.js-toggle-sp-menu').removeClass('active');
+    $('html').removeClass('menu');
     $('.js-toggle-sp-menu-target').removeClass('active');
   });
 });
