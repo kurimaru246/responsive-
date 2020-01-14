@@ -1,0 +1,647 @@
+// 他ファイル読み込み
+
+// フォント
+// ゴシック
+// @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+// おしゃれなの
+@import url('https://fonts.googleapis.com/css?family=Ibarra+Real+Nova&display=swap');
+// ==============================
+// 変数
+// ==============================
+// プロパティに都度都度pxを入れてると、ごちゃごちゃになるので、予め変数で決めておくと良い
+// スタイル指定するときはこの変数から選んで使う
+$font-color_default: #333;
+$font-color_date: #777;
+$color_corp: #777;
+$font-color_sub1: #b6a489;
+
+$bg-color_default: #f4f5f7;
+$bg-color_monocolor: #fff;
+
+$site-width: 980px;
+
+$font-size_s: 12px;
+$font-size_m: 14px;
+$font-size_default: 16px;
+$font-size_l: 18px;
+$font-size_xl: 24px;
+$font-size_xxl: 30px;
+$font-size_3l: 38px;
+
+$space_s: 5px;
+$space_m: 10px;
+$space_l: 15px;
+$space_xl: 20px;
+$space_xxl: 30px;
+$space_3l: 40px;
+
+// フォント
+// ゴシック
+// $font-family_corp: 'Roboto', sans-serif;
+// おしゃれなの
+$font-family_corp: 'Ibarra Real Nova', serif;
+
+// メディアクエリのブレークポイント設定
+// マップ型変数を使うと便利
+$breakpoints: (
+  'sm': 'screen and (max-width: 414px)',
+  'md': 'screen and (max-width: 768px)',
+  'lg': 'screen and (max-width: 1000px)',
+  'xl': 'screen and (max-width: 1200px)'
+) !default;
+
+// ==============================
+// mixin
+// ==============================
+// スマホサイト用ブレークポイント
+@mixin mq($breakpoint: sm) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+// タブレット(iPad)用ブレークポイント
+@mixin mq($breakpoint: md) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+// レスポンシブデザインではPC、SPと横幅が違う。
+// なのでwidthの指定は％で行うのが秘訣
+// ==================================
+// base
+// ==================================
+html,
+body {
+  width: 100%;
+  color: $font-color_default;
+  font-size: $font-size_default;
+  line-height: 1.6;
+  font-family: Quicksand, 游ゴシック体, 'Yu Gothic', YuGothic,
+    'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo,
+    Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif; // TODO:リファクタ必要（変数にする）
+  text-size-adjust: 100%;
+  letter-spacing: 0.1em;
+}
+// font-smoothingでモダンな文字にする
+p,
+a {
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: $font-color_default;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: $color_corp;
+  // transition: 0.3s;
+}
+
+img {
+  width: 100%;
+  height: 175px;
+  vertical-align: bottom;
+}
+
+iframe {
+  vertical-align: bottom;
+  @include mq() {
+    vertical-align: bottom;
+  }
+}
+
+// ==================================
+// header
+// ==================================
+.header {
+  box-sizing: border-box;
+  width: 100%;
+  height: 80px;
+  color: $font-color_default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: $space_xl;
+  padding-right: $space_xl;
+  position: fixed;
+  transition: 0.3s;
+  z-index: 2;
+  &.float-active {
+    transition: 0.3s;
+    background: rgba(255, 255, 255, 0.9);
+  }
+  @include mq() {
+    height: 60px;
+    padding-right: $space_l;
+    padding-left: $space_l;
+  }
+  .title {
+    font-size: $font-size_xxl;
+    font-family: $font-family_corp;
+    font-weight: bold;
+  }
+}
+
+// ==================================
+// menu
+// ==================================
+.nav-menu {
+  @include mq() {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: -100%;
+    background: rgba(255, 255, 255, 0.85);
+    width: 100%;
+    height: 100vh;
+    padding-top: 50px;
+    transition: 0.5s;
+    &.active {
+      transition: 0.5s;
+      transform: translateX(-100%);
+      z-index: 2;
+    }
+  }
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  font-size: $font-size_xl;
+  font-family: $font-family_corp;
+  &-item {
+    margin-right: $space_xl;
+  }
+  &-link {
+    -webkit-font-smoothing: initial;
+  }
+  @include mq() {
+    display: block;
+    font-size: $font-size_xxl;
+    &-item {
+      margin-right: initial;
+    }
+    &-link {
+      -webkit-font-smoothing: initial;
+      display: block;
+      padding: $space_l;
+      text-align: center;
+    }
+  }
+}
+
+.menu-trigger {
+  display: none;
+  @include mq() {
+    display: inline-block;
+  }
+  transition: all 0.4s;
+  box-sizing: border-box;
+  position: relative;
+  width: 40px;
+  height: 32px;
+  z-index: 3;
+  span {
+    display: inline-block;
+    transition: all 0.4s;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: $font-color_default;
+    border-radius: 4px;
+    &:nth-of-type(1) {
+      top: 0;
+    }
+    &:nth-of-type(2) {
+      top: 14px;
+    }
+    &:nth-of-type(3) {
+      bottom: 0;
+    }
+  }
+  &.active span {
+    &:nth-of-type(1) {
+      transform: translateY(12px) rotate(-45deg);
+    }
+    &:nth-of-type(2) {
+      opacity: 0;
+    }
+    &:nth-of-type(3) {
+      transform: translateY(-15px) rotate(45deg);
+    }
+  }
+}
+
+// ==================================
+// hero
+// ==================================
+.hero {
+  // background-attachment: fixed;
+  // background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-image: url('../images/banner.jpg');
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    // background: url('../images/hero.jpg') center/cover no-repeat; /*fixedをトル！*/
+    background-size: cover; /*Android4*/
+  }
+  &-title {
+    font-size: 40px;
+    font-family: $font-family_corp;
+    color: #fff;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8), 0 0 1em rgba(0, 0, 0, 0.9);
+    @include mq() {
+      text-align: center;
+    }
+  }
+  br {
+    display: none;
+    @include mq() {
+      display: block;
+    }
+  }
+}
+
+// ==================================
+// container
+// ==================================
+.container {
+  width: $site-width;
+  @include mq() {
+    width: 100%;
+  }
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 80px;
+  padding-bottom: 120px;
+  &-fluid {
+    width: 100%;
+  }
+  &-title {
+    font-family: $font-family_corp;
+    text-align: center;
+    font-size: $font-size_3l;
+    margin-bottom: $space_3l;
+    @include mq() {
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  &-body {
+    @include mq() {
+      padding-left: $space_l;
+      padding-right: $space_l;
+    }
+  }
+  &-ornament {
+    .container-title {
+      span {
+        // TODO: リファクタ必要（span以外を使うことも考えてclass名で指定すること）
+        display: inline-block;
+        background: #fff;
+        padding: 0 10px;
+        position: relative;
+        z-index: 1;
+      }
+      // beforeとafterでSTAFFの文字の左右にある横棒を再現している
+      &:before,
+      &:after {
+        border-top: 1px solid #2e1f1a;
+        content: '';
+        display: block;
+        position: relative;
+        z-index: 0;
+      }
+      &:before {
+        top: 28px;
+      }
+      &:after {
+        top: -28px;
+      }
+      &-lightGray {
+        span {
+          background: $bg-color_default;
+        }
+      }
+    }
+  }
+}
+
+// ==================================
+// news
+// ==================================
+.news {
+  width: 70%;
+  height: 60px;
+  overflow-y: scroll;
+  margin: 0 auto;
+  border-radius: 5px;
+  background: $bg-color_default; // TODO:リファクタ完了？（複数使いまわしている箇所があるため、変数にまとめる）
+  padding: $space_l $space_xl;
+  &-item {
+    margin-bottom: $space_s;
+  }
+  &-date {
+    color: $font-color_date;
+    font-weight: bold;
+    font-family: $font-family_corp;
+    -webkit-font-smoothing: initial;
+    margin-right: $space_m;
+  }
+  &-title {
+    font-size: $font-size_m;
+  }
+}
+
+// ==================================
+// panel
+// ==================================
+.panel {
+  box-sizing: border-box;
+  background: #fff;
+  position: relative;
+  transition: 0.5s;
+  &-hover {
+    display: inline-block;
+    transition: 0.5s;
+    &:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      transition: 0.5s;
+    }
+  }
+  &-border {
+    border-radius: 5px;
+    border: 5px solid #f6f5f4;
+  }
+  &-head,
+  &-foot {
+    padding: $space_m;
+  }
+  &-head {
+    text-align: center;
+    color: $color_corp;
+  }
+  &-active {
+    border: 5px solid $color_corp;
+  }
+  &-badge {
+    background: #e37b89;
+    color: #fff;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    border-radius: 60px;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 1.3em;
+    padding: 15px 0;
+    box-sizing: border-box;
+    font-size: $font-size_s;
+    transform: rotate(15deg);
+    // SPページで見た時にはみ出ないように少し引っ込めてあげている
+    // 横にはみ出ると、marginなどがはみ出て横にもスクロールできてしまう。
+    // スマホで横方向のスクロールはしないので、挙動がおかしくなってしまうために指定している
+    @include mq() {
+      top: -20px;
+      right: -13px;
+    }
+  }
+
+  &-group {
+    margin-right: -$space_l;
+    &-float {
+      overflow: hidden;
+    }
+    &-flex {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .panel {
+      float: left;
+      margin-right: $space_l;
+      margin-bottom: $space_l;
+      box-sizing: border-box;
+    }
+  }
+  &-staff {
+    width: calc(25% - #{$space_l});
+    @include mq() {
+      width: calc(50% - #{$space_l});
+      height: 175px;
+    }
+  }
+  &-cource {
+    // 3分割は割り切れないので33.3%という風に小数点以下第一位まで書いて指定
+    width: calc(33.3% - #{$space_l});
+    @include mq() {
+      width: 100%;
+      margin: 0 auto $space_l auto;
+    }
+  }
+}
+
+// ==================================
+// infoBox
+// ==================================
+.infoBox {
+  text-align: center;
+  &-item {
+    overflow: hidden;
+  }
+  & dd {
+    display: inline-block;
+    overflow: hidden;
+    @include mq() {
+      font-size: 10px;
+    }
+    & br {
+      display: none;
+      @include mq() {
+        display: block;
+      }
+    }
+  }
+  &-en {
+    color: $font-color_default;
+    font-size: $font-size_s;
+    @include mq() {
+      display: none;
+    }
+  }
+}
+
+// ==================================
+// form
+// ==================================
+.form {
+  width: 100%;
+  &-m {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    @include mq() {
+      width: 100%;
+    }
+  }
+}
+
+.input {
+  display: block;
+  margin-bottom: $space_m;
+  border: 3px solid #f6f5f4;
+  border-radius: 4px;
+  outline: none;
+  height: 60px;
+  font-size: $font-size_l;
+  color: $font-color_default;
+  box-sizing: border-box;
+  &-l {
+    padding: 5px 10px;
+    width: 100%;
+  }
+  &:focus {
+    border: 3px solid $color_corp;
+  }
+  &-textarea {
+    height: 200px;
+  }
+}
+
+::placeholder {
+  color: #ccc;
+}
+
+// ==================================
+// btn
+// ==================================
+.btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  box-sizing: border-box;
+  // ホバーした時にふわっと宙に浮くように見えるやつ
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  &:hover {
+    transform: translateY(-3px);
+    transition: 0.3s;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  &-corp {
+    // グラデーション参考 https://uigradients.com/
+    color: #fff;
+    background: #ee9ca7; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+      to right,
+      #ffdde1,
+      #ee9ca7
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+      to right,
+      #ffdde1,
+      #ee9ca7
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+  &-l {
+    padding: $space_l $space_xxl;
+    width: 100%;
+    font-size: $font-size_l;
+  }
+}
+
+.button-container {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.button {
+  display: inline-block;
+  position: relative;
+  padding: 20px 80px;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s;
+  &::before ::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+  }
+
+  // .button,
+  // .button::before,
+  // .button::after {
+  //   -webkit-box-sizing: border-box;
+  //   -moz-box-sizing: border-box;
+  //   box-sizing: border-box;
+  //   -webkit-transition: all 0.3s;
+  //   // transition: all 0.3s;
+  // }
+
+  &:hover {
+    letter-spacing: 5px;
+  }
+}
+
+// ==================================
+// footer
+// ==================================
+.footer {
+  background: #555;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  @include mq() {
+    font-size: $font-size_s;
+  }
+}
+
+// ==================================
+// Utility
+// ==================================
+.bgColor-baseColor {
+  // TODO:リファクタ完了？（色が後から修正が入り、赤色になったら？）
+  background: $bg-color_default;
+  // box-shadow: 0px 0px 8px 2px #ddd inset;
+}
+.bgColor-mono {
+  background: $bg-color_monocolor;
+  // box-shadow: 0px 0px 8px 2px #ddd inset;
+}
+
+.mb-xxl {
+  margin-bottom: $space_xxl;
+}
+
+.ft-corp {
+  font-weight: bold;
+  font-family: $font-family_corp;
+}
+
+.ft-l {
+  font-size: $font-size_xl;
+}
